@@ -1,12 +1,17 @@
 package io.github.alanabarbosa;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
-import io.github.alanabarbosa.converters.*;
+import io.github.alanabarbosa.converters.NumberConverter;
 import io.github.alanabarbosa.exceptions.UnsupportedMathOperationException;
+import io.github.alanabarbosa.math.MathService;
 
 @RestController
 public class MathController {
+	
+	private MathService math = new MathService();
 	
 	@GetMapping("/sum/{numberOne}/{numberTwo}")
 	public Double sum(
@@ -14,7 +19,8 @@ public class MathController {
 			@PathVariable String numberTwo) throws Exception {
 		
 		verify(numberOne, numberTwo);		
-		return NumberConverter.converteToDouble(numberOne) + NumberConverter.converteToDouble(numberTwo);
+		return math.sum(NumberConverter.converteToDouble(numberOne),
+				NumberConverter.converteToDouble(numberTwo));
 	}
 	
 	@GetMapping("/subtract/{numberOne}/{numberTwo}")
@@ -23,7 +29,8 @@ public class MathController {
 			@PathVariable String numberTwo) throws Exception {
 		
 		verify(numberOne, numberTwo);		
-		return NumberConverter.converteToDouble(numberOne) - NumberConverter.converteToDouble(numberTwo);
+		return math.subtract(NumberConverter.converteToDouble(numberOne), 
+				NumberConverter.converteToDouble(numberTwo));
 	}
 	
 	@GetMapping("/multiply/{numberOne}/{numberTwo}")
@@ -32,7 +39,8 @@ public class MathController {
 			@PathVariable String numberTwo) throws Exception {
 		
 		verify(numberOne, numberTwo);		
-		return NumberConverter.converteToDouble(numberOne) * NumberConverter.converteToDouble(numberTwo);
+		return math.multiply(NumberConverter.converteToDouble(numberOne), 
+				NumberConverter.converteToDouble(numberTwo));
 	}
 	
 	@GetMapping("/divide/{numberOne}/{numberTwo}")
@@ -41,7 +49,8 @@ public class MathController {
 			@PathVariable String numberTwo) throws Exception {
 		
 		verify(numberOne, numberTwo);		
-		return NumberConverter.converteToDouble(numberOne) / NumberConverter.converteToDouble(numberTwo);
+		return math.divide(NumberConverter.converteToDouble(numberOne), 
+				NumberConverter.converteToDouble(numberTwo));
 	}
 	
 	private void verify(String numberOne, String numberTwo) {
